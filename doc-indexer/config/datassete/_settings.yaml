@@ -1,0 +1,10 @@
+name: "datassete"
+
+fs:
+  url: /root/data/datassete
+  ocr:
+    enabled: false
+
+elasticsearch:
+  nodes:
+    - url: "http://elasticsearch:9200"
