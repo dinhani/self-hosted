@@ -20,7 +20,9 @@ services:
   fscrawler:
     image: dadoonet/fscrawler:2.10-SNAPSHOT-ocr-es7
     volumes:
-      - ./config:/root/.fscrawler
+      # config
+      - ./fscrawler:/root/.fscrawler
+      # data
       - /mnt/e/datasets/datassette.org/Datassette/:/root/data/datassete
     command:
       - fscrawler
