@@ -7,15 +7,8 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    environment:
-      # single node, not cluster
-      - discovery.type=single-node
-      # https disabled
-      - xpack.security.enabled=false
-      # cors for browser ui direct access
-      - http.cors.enabled=true
-      - http.cors.allow-origin="*"
     volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
 
   kibana:

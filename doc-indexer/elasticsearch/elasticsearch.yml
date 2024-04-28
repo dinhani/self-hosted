@@ -1,21 +1,18 @@
+
 # ------------------------------------------------------------------------------
 # Server
 # ------------------------------------------------------------------------------
-server.host: "0.0.0.0"
-server.shutdownTimeout: "5s"
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+discovery.type: single-node
 
 # ------------------------------------------------------------------------------
-# ElasticSearch
+# CORS
 # ------------------------------------------------------------------------------
-elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+http.cors.allow-origin: "*"
+http.cors.enabled: true
 
 # ------------------------------------------------------------------------------
-# Logging
+# HTTPS
 # ------------------------------------------------------------------------------
-logging.appenders.docker.type: console
-logging.appenders.docker.layout.type: pattern
-logging.appenders.docker.layout.pattern: "%level | %message"
-logging.appenders.docker.layout.highlight: true
-
-logging.root.level: info
-logging.root.appenders: ["docker"]
+xpack.security.enabled: false
