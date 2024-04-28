@@ -2,6 +2,10 @@ name: "datassete"
 
 fs:
   url: /root/data/datassete
+  index_folders: false
+  update_rate: "72h"
+  indexed_chars: 1000000
+  lang_detect: true
   ocr:
     enabled: false
 

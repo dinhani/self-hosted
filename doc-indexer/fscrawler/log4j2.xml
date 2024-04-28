@@ -1,0 +1,13 @@
+<Configuration>
+    <Appenders>
+        <Console name="docker" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="%highlight{%5p} | %m%n" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="docker" />
+        </Root>
+    </Loggers>
+</Configuration>

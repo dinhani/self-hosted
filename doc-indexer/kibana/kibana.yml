@@ -1,0 +1,17 @@
+# ------------------------------------------------------------------------------
+# Default
+# ------------------------------------------------------------------------------
+server.host: "0.0.0.0"
+server.shutdownTimeout: "5s"
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+
+# ------------------------------------------------------------------------------
+# Logging
+# ------------------------------------------------------------------------------
+logging.appenders.docker.type: console
+logging.appenders.docker.layout.type: pattern
+logging.appenders.docker.layout.pattern: "%level | %message"
+logging.appenders.docker.layout.highlight: true
+
+logging.root.level: info
+logging.root.appenders: ["docker"]
