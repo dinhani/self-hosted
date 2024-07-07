@@ -2,24 +2,9 @@ version: "3"
 
 services:
 
-  elasticsearch:
-    image: elasticsearch:8.13.0
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - ./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
-
-  kibana:
-    image: kibana:8.13.0
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-    volumes:
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
-
+  # ----------------------------------------------------------------------------
+  # Indexer
+  # ----------------------------------------------------------------------------
   fscrawler:
     image: dadoonet/fscrawler:2.10-SNAPSHOT-ocr-es7
     volumes:
@@ -32,3 +17,27 @@ services:
     command:
       - fscrawler
       - datassete
+
+  # ----------------------------------------------------------------------------
+  # Database
+  # ----------------------------------------------------------------------------
+  elasticsearch:
+    image: elasticsearch:8.13.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+
+  # ----------------------------------------------------------------------------
+  # Web UI
+  # ----------------------------------------------------------------------------
+  kibana:
+    image: kibana:8.13.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
