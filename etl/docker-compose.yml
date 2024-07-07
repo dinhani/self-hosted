@@ -1,0 +1,94 @@
+version: "3"
+
+services:
+  # ----------------------------------------------------------------------------
+  # Database - PostgreSQL
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16.3
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+
+  # ----------------------------------------------------------------------------
+  # Airflow
+  # ----------------------------------------------------------------------------
+
+  # Web UI
+  airflow-web:
+    image: bitnami/airflow:2.9.2
+    environment:
+      # secret
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      # postgres
+      - AIRFLOW_DATABASE_HOST=postgres
+      - AIRFLOW_DATABASE_NAME=airflow
+      - AIRFLOW_DATABASE_USERNAME=airflow
+      - AIRFLOW_DATABASE_PASSWORD=airflow
+      # executor
+      - AIRFLOW_EXECUTOR=LocalExecutor
+      - AIRFLOW_LOAD_EXAMPLES=false
+      # web
+      - AIRFLOW_WEBSERVER_PORT=8080
+      - AIRFLOW_USERNAME=admin
+      - AIRFLOW_PASSWORD=admin
+    volumes:
+      - ./dags:/opt/bitnami/airflow/dags
+    ports:
+      - "8080:8080"
+
+  # Scheduler
+  airflow-scheduler:
+    image: bitnami/airflow-scheduler:2.9.2
+    environment:
+      # secret
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      # postgres
+      - AIRFLOW_DATABASE_HOST=postgres
+      - AIRFLOW_DATABASE_NAME=airflow
+      - AIRFLOW_DATABASE_USERNAME=airflow
+      - AIRFLOW_DATABASE_PASSWORD=airflow
+      # redis
+      - REDIS_HOST=redis
+      # executor
+      - AIRFLOW_EXECUTOR=LocalExecutor
+      - AIRFLOW_LOAD_EXAMPLES=false
+      # webserver
+      - AIRFLOW_WEBSERVER_HOST=airflow-web
+    volumes:
+      - ./dags:/opt/bitnami/airflow/dags
+
+  # ----------------------------------------------------------------------------
+  # CeleryExecutor additional services
+  # ----------------------------------------------------------------------------
+
+  # redis:
+  #   image: redis:7.2.5
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+  #   ports:
+  #     - "6379:6379"
+
+  # airflow-worker:
+  #   image: bitnami/airflow-worker:2.9.2
+  #   environment:
+  #     # secret
+  #     - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+  #     - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+  #     # postgres
+  #     - AIRFLOW_DATABASE_HOST=postgres
+  #     - AIRFLOW_DATABASE_NAME=airflow
+  #     - AIRFLOW_DATABASE_USERNAME=airflow
+  #     - AIRFLOW_DATABASE_PASSWORD=airflow
+  #     # executor
+  #     - AIRFLOW_EXECUTOR=CeleryExecutor
+  #     - AIRFLOW_LOAD_EXAMPLES=false
+  #     # webserver
+  #     - AIRFLOW_WEBSERVER_HOST=airflow-web
+  #   volumes:
+  #     - ./dags:/opt/bitnami/airflow/dags
